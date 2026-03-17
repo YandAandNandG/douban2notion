@@ -332,11 +332,17 @@ def get_weread_url(book_id):
     return f"https://weread.qq.com/web/reader/{calculate_book_str_id(book_id)}"
 
 def str_to_timestamp(date):
-    if date == None:
-        return 0
-    dt = pendulum.parse(date)
-    # 获取时间戳
-    return int(dt.timestamp())
+    try:
+        # 先判断是不是明显无效的值
+        if not date or date == "Invalid DateTime" or not isinstance(date, str):
+            return None  # 或者返回你想要的默认日期，比如 pendulum.now()
+        
+        dt = pendulum.parse(date)
+        # ... 保留原有的后续代码
+        return dt  # 或者原函数的返回值
+    except Exception as e:
+        print(f"Warning: 日期解析失败，跳过该日期。原始值: {date}, 错误: {e}")
+        return None  # 解析失败时返回空值，不中断整个流程
 
 upload_url = 'https://wereadassets.malinkang.com/'
 
